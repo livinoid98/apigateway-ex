@@ -19,7 +19,7 @@ public class WebSecurity {
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/users/**").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll()
                 )
                 .httpBasic(Customizer.withDefaults());
         return http.build();
