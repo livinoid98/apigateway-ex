@@ -44,6 +44,7 @@ public class WebSecurity {
                 .csrf((csrf) -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/**").permitAll()
+                        .requestMatchers("/actuator/**").permitAll()
                 )
                 .addFilter(getAuthenticationFilter())
                 .httpBasic(Customizer.withDefaults());
