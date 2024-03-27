@@ -9,11 +9,6 @@ spring:
     port: 5672
     username: guest
     password: guest
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/cloudgateway?
-    username: 'root'
-    password: 'root'
   jpa:
     hibernate:
       ddl-auto: create
@@ -39,4 +34,4 @@ management:
   endpoints:
     web:
       exposure:
-        include: refresh, health, beans, busrefresh
+        include: refresh, health, beans, busrefresh, info, metrics, prometheus
