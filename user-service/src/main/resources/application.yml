@@ -2,6 +2,11 @@ server:
   port: 0
 
 spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: mysql://127.0.0.1:3306/cloudgateway?
+    username: root
+    password: root
   application:
     name: user-service
   rabbitmq:
@@ -28,6 +33,7 @@ greeting:
 
 logging:
   level:
+    com.example.userservice: DEBUG
     com.example.userservice.client: DEBUG
 
 management:

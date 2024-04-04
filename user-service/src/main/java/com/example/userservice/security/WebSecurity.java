@@ -1,9 +1,15 @@
 package com.example.userservice.security;
 
 import com.example.userservice.service.UserService;
+import com.example.userservice.vo.RequestLogin;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.config.Customizer;
@@ -23,6 +29,7 @@ import java.util.function.Supplier;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@Slf4j
 public class WebSecurity {
 
     public static final String ALLOWED_IP_ADDRESS = "192.168.56.1";
@@ -31,11 +38,13 @@ public class WebSecurity {
 
     private UserService userService;
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+    private Environment env;
 
     @Autowired
-    public WebSecurity(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public WebSecurity(UserService userService, BCryptPasswordEncoder bCryptPasswordEncoder, Environment env) {
         this.userService = userService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.env = env;
     }
 
     @Bean
@@ -52,13 +61,19 @@ public class WebSecurity {
     }
 
     private AuthenticationFilter getAuthenticationFilter() throws Exception {
-        AuthenticationFilter authenticationFilter = new AuthenticationFilter();
-        authenticationFilter.setAuthenticationManager(new AuthenticationManager() {
+        AuthenticationFilter authenticationFilter = new AuthenticationFilter(new AuthenticationManager() {
             @Override
             public Authentication authenticate(Authentication authentication) throws AuthenticationException {
                 return null;
             }
-        });
+        }, userService, env);
+
+//        authenticationFilter.setAuthenticationManager(new AuthenticationManager() {
+//            @Override
+//            public Authentication authenticate(Authentication authentication) throws AuthenticationException {
+//                return null;
+//            }
+//        });
 
         return authenticationFilter;
     }
